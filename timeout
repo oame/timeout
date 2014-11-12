@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+ping = system("ping -c 1 -W 1000 -t 1 google.com 2> /dev/null")
+
+disconnected = ping.scan(/,\s(\d)\spackets received/)[0][0].to_i.zero? rescue true
+
+if (disconnected)
+  puts "Network looks unavailable. Try to restart network..."
+  system 'networksetup -setairportpower en0 off'
+  system 'networksetup -setairportpower en0 on'
+end
